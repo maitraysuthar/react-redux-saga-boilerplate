@@ -1,0 +1,26 @@
+{
+  "name": "react-redux-saga-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "0.9.x",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "redux-observable": "^1.0.0",
+    "redux-saga": "^0.16.0",
+    "redux": "^4.0.0",
+    "redux-actions": "^2.4.0",
+    "axios": "^0.18.0",
+    "moment": "^2.22.2",
+    "node-sass": "^4.9.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
