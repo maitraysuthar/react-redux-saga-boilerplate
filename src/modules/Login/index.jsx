@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import './login.css';
 import PropTypes from 'prop-types';
-import { loginRequest }  from './actions';
+import { loginRequest,loginPageInit }  from './actions';
+import FlashMessage from '../../components/FlashMessage/FlashMessage';
 
 class Login extends Component {
 
@@ -13,7 +14,14 @@ class Login extends Component {
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
+                    {Object.keys(this.props.errors).length > 0 &&
+                        <FlashMessage data={this.props.errors.data?this.props.errors.data:this.props.errors.message} alertClass="danger" />
+                    }
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6">
                         <h1>Login</h1>
                         <Formik
                             initialValues={{ email: '', password:'' }}
@@ -89,18 +97,24 @@ class Login extends Component {
 
 Login.propTypes = {
     onSubmitForm: PropTypes.func,
+    errors: PropTypes.object
 };
 
-export function mapDispatchToProps(dispatch) {
+function mapStateToProps(state){
+    return { errors: state.login.errors};
+}
+
+function mapDispatchToProps(dispatch) {
     return {
       onSubmitForm: evt => {
         if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-        dispatch(loginRequest());
+        dispatch(loginRequest(evt));
       },
+      onPageInit: dispatch(loginPageInit())
     };
 }
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
-)(Login);
+)(withRouter(Login));

@@ -17,8 +17,9 @@ function loginCall(payload) {
 function* loginWorker({ payload }) {
   try {
     let response = yield call(loginCall, payload);
+    response = response.data;
     localStorage.removeItem('user');
-    localStorage.setItem('token', 'Bearer '.concat(response.token));
+    localStorage.setItem('token', 'Bearer '.concat(response.data.token));
     localStorage.setItem(
       'user',
       JSON.stringify({
@@ -27,7 +28,7 @@ function* loginWorker({ payload }) {
       }),
     );
     yield put(loginSuccess());
-    yield call(browserRedirect, '/home');
+    yield call(browserRedirect, '/');
   } catch (err) {
     yield put(loginError(err.response.data));
   }

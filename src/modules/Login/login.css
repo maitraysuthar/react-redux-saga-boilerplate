@@ -6,3 +6,7 @@ input.error {
     color: red;
     margin-top: .25rem;
 }
+
+.alert li {
+    list-style: none;
+}
