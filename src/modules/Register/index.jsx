@@ -11,7 +11,7 @@ class Register extends Component {
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6 mx-auto">
                         <h1>Registration</h1>
                         <Formik
                             initialValues={{ firstName: '',lastName: '', email: '', password:'' }}

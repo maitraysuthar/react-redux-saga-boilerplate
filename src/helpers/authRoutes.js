@@ -2,21 +2,19 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { checkAuthorization } from '../helpers/helper';
-import Header from '../components/Layouts/Private/Header';
 
-const PrivateRoute = ({
+const AuthRoute = ({
   component: Component,
   redirect: pathname,
   ...rest
 }) => {
   const Routes = (props) => {
-    if(checkAuthorization() === true){
+    if(checkAuthorization() === false){
       return (
         <Route
           {...rest}
           render={props =>
-            <div className="privateLayout">
-              <Header />
+            <div className="authLayout">
               <Component {...rest} {...props} />
             </div>
           }
@@ -38,11 +36,11 @@ const PrivateRoute = ({
   );
 };
 
-PrivateRoute.defaultProps = { redirect: '/login' };
+AuthRoute.defaultProps = { redirect: '/' };
 
-PrivateRoute.propTypes = {
+AuthRoute.propTypes = {
   component: PropTypes.object.isRequired,
   redirect: PropTypes.string,
 };
 
-export default PrivateRoute;
+export default AuthRoute;

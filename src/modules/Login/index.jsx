@@ -14,14 +14,14 @@ class Login extends Component {
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-6 mx-auto">
                     {Object.keys(this.props.errors).length > 0 &&
                         <FlashMessage data={this.props.errors.data?this.props.errors.data:this.props.errors.message} alertClass="danger" />
                     }
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-6 mx-auto">
                         <h1>Login</h1>
                         <Formik
                             initialValues={{ email: '', password:'' }}

@@ -2,19 +2,25 @@ import axios from "axios";
 import { put, all, call, takeLatest } from "redux-saga/effects";
 import { browserRedirect } from '../../helpers/helper';
 import {
-  LOGIN_REQUESTING,
+  BOOK_PAGE_INIT,
   loginSuccess,
   loginError,
 } from "./actions";
 const API_ROOT = process.env.REACT_APP_NODE_ENV === 'production'? process.env.REACT_APP_PROD_API_URL: process.env.REACT_APP_DEV_API_URL;
 
-//Login API call
-function loginCall(payload) {
-  return axios.post(`${API_ROOT}/auth/login`, payload);
+let axiosConfig = {
+  headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      "Access-Control-Allow-Origin": "*",
+  }
+};
+//Book API call
+function bookCall(payload) {
+  return axios.get(`${API_ROOT}/book`, payload);
 }
 
-// LOGIN Worker
-function* loginWorker({ payload }) {
+// Book Worker
+function* bookWorker({ payload }) {
   try {
     let response = yield call(loginCall, payload);
     response = response.data;
@@ -35,9 +41,9 @@ function* loginWorker({ payload }) {
   }
 }
 
-// Login Watcher
-export default function* loginSaga() {
+// Book Watcher
+export default function* bookSaga() {
   yield all([
-    takeLatest(LOGIN_REQUESTING, loginWorker),
+    takeLatest(BOOK_PAGE_INIT, bookWorker),
   ]);
 }

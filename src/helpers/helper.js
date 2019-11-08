@@ -19,3 +19,29 @@ export const DisplayFormikState = props =>
 export const browserRedirect = location => {
   history.push(location);
 }
+
+export const parseJwt = token => {
+  if (token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+  }
+  return null;
+};
+
+export const checkAuthorization = () => {
+  const storedToken = localStorage.getItem('token');
+
+  if (storedToken) {
+    const tokenPayload = parseJwt(storedToken);
+
+    const expiration = new Date(tokenPayload.exp * 1000).getTime();
+    const current = new Date().getTime();
+
+    if (current > expiration) return false;
+
+    return true;
+  }
+
+  return false;
+};

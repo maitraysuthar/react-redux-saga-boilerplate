@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-class FlashMessage extends React.Component {
+class FlashMessage extends Component {
     constructor(props) {
         super(props);
     }
