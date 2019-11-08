@@ -1,43 +1,26 @@
-import axios from "axios";
 import { put, all, call, takeLatest } from "redux-saga/effects";
-import { browserRedirect } from '../../helpers/helper';
+import { browserRedirect } from '../../helpers/helpers';
 import {
   BOOK_PAGE_INIT,
-  loginSuccess,
-  loginError,
+  bookError,
+  bookSuccess
 } from "./actions";
-const API_ROOT = process.env.REACT_APP_NODE_ENV === 'production'? process.env.REACT_APP_PROD_API_URL: process.env.REACT_APP_DEV_API_URL;
+import { request } from '../../helpers/requests';
+import { urls } from '../../helpers/urls';
 
-let axiosConfig = {
-  headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-  }
-};
 //Book API call
-function bookCall(payload) {
-  return axios.get(`${API_ROOT}/book`, payload);
+function bookCall() {
+  return request('get', urls.BOOK);
 }
 
 // Book Worker
-function* bookWorker({ payload }) {
+function* bookWorker() {
   try {
-    let response = yield call(loginCall, payload);
+    let response = yield call(bookCall);
     response = response.data;
-    localStorage.removeItem('user');
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem(
-      'user',
-      JSON.stringify({
-        id: response.data._id,
-        firstName: response.data.firstName,
-        lastName: response.data.lastName
-      }),
-    );
-    yield put(loginSuccess());
-    yield call(browserRedirect, '/');
+    yield put(bookSuccess(response));
   } catch (err) {
-    yield put(loginError(err.response.data));
+    yield put(bookError(err.response.data));
   }
 }
 

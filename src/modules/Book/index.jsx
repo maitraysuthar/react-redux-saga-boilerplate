@@ -7,6 +7,9 @@ import { bookPageInit }  from './actions';
 import FlashMessage from '../../components/FlashMessage/FlashMessage';
 
 class Book extends Component {
+    componentDidMount(){
+        bookPageInit();
+    }
 
     render(){
         return(
@@ -21,12 +24,12 @@ class Book extends Component {
     }
 }
 
-Login.propTypes = {
+Book.propTypes = {
     books: PropTypes.object
 };
 
 function mapStateToProps(state){
-    return { errors: state.login.errors};
+    return { books: state.books};
 }
 
 export default connect(

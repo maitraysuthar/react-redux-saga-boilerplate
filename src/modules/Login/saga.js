@@ -1,16 +1,16 @@
-import axios from "axios";
 import { put, all, call, takeLatest } from "redux-saga/effects";
-import { browserRedirect } from '../../helpers/helper';
+import { request } from '../../helpers/requests';
+import { browserRedirect } from '../../helpers/helpers';
+import { urls } from '../../helpers/urls';
 import {
   LOGIN_REQUESTING,
   loginSuccess,
   loginError,
 } from "./actions";
-const API_ROOT = process.env.REACT_APP_NODE_ENV === 'production'? process.env.REACT_APP_PROD_API_URL: process.env.REACT_APP_DEV_API_URL;
 
 //Login API call
 function loginCall(payload) {
-  return axios.post(`${API_ROOT}/auth/login`, payload);
+  return request('post', urls.LOGIN_URL, payload);
 }
 
 // LOGIN Worker

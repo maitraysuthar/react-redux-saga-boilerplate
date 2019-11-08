@@ -10,6 +10,7 @@ const Home = lazy(() => import('../Home'));
 const Logout = lazy(() => import('../Home/logout'));
 const Login = lazy(() => import('../Login'));
 const Register = lazy(() => import('../Register'));
+const Book = lazy(() => import('../Book'));
 
 // Root routes
 const Routes = () => (
@@ -20,6 +21,7 @@ const Routes = () => (
         <PrivateRoute path="/logout" component={Logout}/>
         <AuthRoute path="/login" component={Login}/>
         <AuthRoute path="/register" component={Register}/>
+        <PrivateRoute path="/book" component={Book}/>
       </Switch>
     </Suspense>
   </Router>

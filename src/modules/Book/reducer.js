@@ -1,29 +1,24 @@
 import {
-    LOGIN_PAGE_INIT,
-    LOGIN_ERROR,
-    LOGIN_REQUESTING,
-    LOGIN_SUCCESS,
+    BOOK_PAGE_INIT,
+    BOOK_ERROR,
+    BOOK_SUCCESS,
 } from './actions';
 
 // The initial state of the Login Reducer
 export const initialState = {
-    id: '',
-    password: '',
-    requesting: false,
     successful: false,
     messages: [],
     errors: {},
+    books: {}
   };
 
 export default function(state = initialState,actions){
     switch(actions.type){
-        case LOGIN_PAGE_INIT:
-        return {...state, errors:{}};
-        case LOGIN_REQUESTING:
-            return {...state, requesting: true};
-        case LOGIN_SUCCESS:
-            return {...state, successful: true, user:{...actions.payload}};
-        case LOGIN_ERROR:
+        case BOOK_PAGE_INIT:
+            return {...state, errors:{}, books: {}};
+        case BOOK_SUCCESS:
+            return {...state, successful: true, books:{...actions.payload}};
+        case BOOK_ERROR:
             return {...state, successful: false, errors:{...actions.error}};
         default:        
             return state;

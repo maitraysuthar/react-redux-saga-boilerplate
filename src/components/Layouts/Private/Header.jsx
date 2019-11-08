@@ -16,7 +16,7 @@ class Header extends Component {
                             <Link to="/" className="nav-link">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">My Books</a>
+                            <Link to="/books" className="nav-link">My Books</Link>
                         </li>
                     </ul>
                     <div className="dropdown">
