@@ -11,6 +11,7 @@ const Logout = lazy(() => import('../Home/logout'));
 const Login = lazy(() => import('../Login'));
 const Register = lazy(() => import('../Register'));
 const Book = lazy(() => import('../Book'));
+const ManageBook = lazy(() => import('../Book/ManageBook'))
 
 // Root routes
 const Routes = () => (
@@ -18,10 +19,12 @@ const Routes = () => (
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
         <PrivateRoute exact path="/" component={Home}/>
-        <PrivateRoute path="/logout" component={Logout}/>
         <AuthRoute path="/login" component={Login}/>
         <AuthRoute path="/register" component={Register}/>
+        <PrivateRoute path="/logout" component={Logout}/>
         <PrivateRoute path="/book" component={Book}/>
+        <PrivateRoute path="/manage-book/:id" component={ManageBook}/>
+        <PrivateRoute path="/manage-book" component={ManageBook}/>
       </Switch>
     </Suspense>
   </Router>

@@ -16,7 +16,9 @@ class Login extends Component {
                 <div className="row">
                     <div className="col-md-6 mx-auto">
                     {Object.keys(this.props.errors).length > 0 &&
-                        <FlashMessage data={this.props.errors.data?this.props.errors.data:this.props.errors.message} alertClass="danger" />
+                        <div>
+                            <FlashMessage data={this.props.errors.data?this.props.errors.data:this.props.errors.message} alertClass="danger" />
+                        </div>
                     }
                     </div>
                 </div>
@@ -40,7 +42,6 @@ class Login extends Component {
                                 touched,
                                 errors,
                                 isValid,
-                                isSubmitting,
                                 handleChange,
                                 handleBlur,
                                 handleSubmit,

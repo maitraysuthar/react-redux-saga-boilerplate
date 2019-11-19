@@ -6,7 +6,7 @@ class Header extends Component {
         const user  = JSON.parse(localStorage.getItem('user'));
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a className="navbar-brand" href="#">[Company-Name]</a>
+                <Link to="/" className="navbar-brand">[Company-Name]</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -20,7 +20,7 @@ class Header extends Component {
                         </li>
                     </ul>
                     <div className="dropdown">
-                        <a className="navbar-text dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="navbar-text dropdown-toggle" href="# " id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {user.firstName} {user.lastName}
                         </a>
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

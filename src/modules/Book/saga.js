@@ -1,15 +1,19 @@
 import { put, all, call, takeLatest } from "redux-saga/effects";
-import { browserRedirect } from '../../helpers/helpers';
 import {
   BOOK_PAGE_INIT,
   BOOK_DETAIL_INIT,
+  BOOK_DELETE_INIT,
   bookError,
   bookSuccess,
   bookDetailError,
-  bookDetailSuccess
+  bookDetailSuccess,
+  bookDeleteError,
+  bookDeleteSuccess,
+  bookPageInit
 } from "./actions";
 import { request } from '../../helpers/requests';
 import { urls } from '../../helpers/urls';
+import manageBookSaga from './ManageBook/saga';
 
 //Book API calls
 function bookCall() {
@@ -18,6 +22,10 @@ function bookCall() {
 
 function bookDetailCall(id) {
   return request('get', urls.BOOK+'/'+id);
+}
+
+function bookDeleteCall(id) {
+  return request('delete', urls.BOOK+'/'+id);
 }
 
 // Book Workers
@@ -41,10 +49,23 @@ function* bookDetailWorker(payload) {
   }
 }
 
+function* bookDeleteWorker(payload) {
+  try {
+    let response = yield call(bookDeleteCall, payload.id);
+    response = response.data;
+    yield put(bookDeleteSuccess(response));
+    yield put(bookPageInit());
+  } catch (err) {
+    yield put(bookDeleteError(err.response.data));
+  }
+}
+
 // Book Watcher
 export default function* bookSaga() {
   yield all([
     takeLatest(BOOK_PAGE_INIT, bookWorker),
-    takeLatest(BOOK_DETAIL_INIT, bookDetailWorker)
+    takeLatest(BOOK_DETAIL_INIT, bookDetailWorker),
+    takeLatest(BOOK_DELETE_INIT, bookDeleteWorker),
+    manageBookSaga()
   ]);
 }

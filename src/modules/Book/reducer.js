@@ -5,8 +5,12 @@ import {
     BOOK_DETAIL_INIT,
     BOOK_DETAIL_ERROR,
     BOOK_DETAIL_SUCCESS,
-    BOOK_DETAIL_CLOSE
+    BOOK_DETAIL_CLOSE,
+    BOOK_DELETE_ERROR,
+    BOOK_DELETE_SUCCESS,
 } from './actions';
+import { combineReducers } from "redux";
+import  manageBookReducer  from './ManageBook/reducer';
 
 // The initial state of the Login Reducer
 export const initialState = {
@@ -15,13 +19,14 @@ export const initialState = {
     errors: [],
     books: [],
     selectedBook: {},
-    selectedBookError: {}
+    selectedBookError: {},
+    deleteBook: {}
   };
 
-export default function(state = initialState,actions){
+const bookReducers = function(state = initialState,actions){
     switch(actions.type){
         case BOOK_PAGE_INIT:
-            return {...state, errors:[], books: []};
+            return {...state, errors:[], books: [], selectedBook: {}};
         case BOOK_SUCCESS:
             return {...state, successful: true, books:[...actions.payload]};
         case BOOK_ERROR:
@@ -34,7 +39,16 @@ export default function(state = initialState,actions){
             return {...state, selectedBookError:{...actions.error}};
         case BOOK_DETAIL_CLOSE:
             return {...state, selectedBookError:{}, selectedBook: {}};
+        case BOOK_DELETE_SUCCESS:
+            return {...state, deleteBook: {...actions.payload}};
+        case BOOK_DELETE_ERROR:
+            return {...state, selectedBookError:{...actions.error}};
         default:        
             return state;
     }
 }
+
+export default combineReducers({
+    list_book : bookReducers,
+    manage_book: manageBookReducer
+});

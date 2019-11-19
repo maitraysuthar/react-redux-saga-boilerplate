@@ -5,6 +5,9 @@ export const BOOK_DETAIL_INIT = 'BOOK_DETAIL_INIT';
 export const BOOK_DETAIL_ERROR = 'BOOK_DETAIL_ERROR';
 export const BOOK_DETAIL_SUCCESS = 'BOOK_DETAIL_SUCCESS';
 export const BOOK_DETAIL_CLOSE = 'BOOK_DETAIL_CLOSE';
+export const BOOK_DELETE_INIT = 'BOOK_DELETE_INIT';
+export const BOOK_DELETE_ERROR = 'BOOK_DELETE_ERROR';
+export const BOOK_DELETE_SUCCESS = 'BOOK_DELETE_SUCCESS';
 
 export function bookPageInit() {
     return {
@@ -50,5 +53,26 @@ export function bookDetailSuccess(payload) {
 export function bookDetailClose() {
     return {
         type: BOOK_DETAIL_CLOSE,
+    };
+}
+
+export function bookDeleteInit(id) {
+    return {
+        type: BOOK_DELETE_INIT,
+        id 
+    };
+}
+
+export function bookDeleteError(error) {
+    return {
+        type: BOOK_DELETE_ERROR,
+        error,
+    };
+}
+
+export function bookDeleteSuccess(payload) {
+    return {
+        type: BOOK_DELETE_SUCCESS,
+        payload
     };
 }
