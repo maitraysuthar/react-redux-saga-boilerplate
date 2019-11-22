@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import './book.css';
 import PropTypes from 'prop-types';
-import { bookPageInit,bookDetailInit,bookDetailClose,bookDeleteInit }  from './actions';
+import { bookPageInit,bookDetailInit,bookDetailClose,bookDeleteInit,releaseStateData }  from './actions';
 import FlashMessage from '../../components/FlashMessage/FlashMessage';
 import ViewBookModel from './bookModel';
 
@@ -42,6 +42,10 @@ class Book extends Component {
 
     componentDidMount(){
         this.props.getBooks();
+    }
+
+    componentWillUnmount() {
+        this.props.releaseData();
     }
 
     renderBooks(handleModalShow){
@@ -139,6 +143,7 @@ function mapDispatchToProps(dispatch){
         getBookDetail: (id) => dispatch(bookDetailInit(id)),
         detailModalClose: () => dispatch(bookDetailClose()),
         deleteBookRequest: (id) => dispatch(bookDeleteInit(id)),
+        releaseData: () => dispatch(releaseStateData()),
     }; 
 }
 

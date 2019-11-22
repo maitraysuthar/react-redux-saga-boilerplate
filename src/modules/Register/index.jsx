@@ -5,22 +5,41 @@ import {withRouter} from 'react-router'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import '../Login/login.css';
+import PropTypes from 'prop-types';
+import { registerRequest,registerPageInit }  from './actions';
+import FlashMessage from '../../components/FlashMessage/FlashMessage';
 
 class Register extends Component {
+    componentDidUpdate(prevProps, prevState) {
+        // reset form 
+        if(Object.keys(this.props.user).length > 0){
+            this.formik.resetForm();
+        }   
+    }
     render(){
         return(
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 mx-auto">
+                    {Object.keys(this.props.errors).length > 0 &&
+                        <div>
+                            <FlashMessage data={this.props.errors.data?this.props.errors.data:this.props.errors.message} alertClass="danger" />
+                        </div>
+                    }
+                    {Object.keys(this.props.user).length > 0 &&
+                        <div>
+                            <FlashMessage data={this.props.user.message} alertClass="success" />
+                        </div>
+                    }
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6 mx-auto">
                         <h1>Registration</h1>
                         <Formik
-                            initialValues={{ firstName: '',lastName: '', email: '', password:'' }}
-                            onSubmit={(values, { setSubmitting }) => {
-                                setTimeout(() => {
-                                alert(JSON.stringify(values, null, 2));
-                                setSubmitting(false);
-                                }, 500);
-                            }}
+                            ref={(ref) => this.formik = ref}
+                            initialValues={{ firstName: '',lastName: '', email: '', password:'', confirmPassword:'' }}
+                            onSubmit={this.props.onSubmitForm}
                             validationSchema={Yup.object().shape({
                                 firstName: Yup.string().matches(/^[a-zA-Z]+$/,'First name only allows alphabets.')
                                 .required('First Name Required'),
@@ -50,7 +69,7 @@ class Register extends Component {
                                 return (
                                     <form onSubmit={handleSubmit}>
                                         <div className="form-group">
-                                            <label for="firstName">First Name</label>
+                                            <label htmlFor="firstName">First Name</label>
                                             <input type="text"
                                                 id="firstName"
                                                 value={values.firstName}
@@ -66,7 +85,7 @@ class Register extends Component {
                                             )}
                                         </div>
                                         <div className="form-group">
-                                            <label for="lastName">Last Name</label>
+                                            <label htmlFor="lastName">Last Name</label>
                                             <input type="text"
                                                 id="lastName"
                                                 value={values.lastName}
@@ -82,7 +101,7 @@ class Register extends Component {
                                             )}
                                         </div>
                                         <div className="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
+                                            <label htmlFor="exampleInputEmail1">Email address</label>
                                             <input type="email"
                                                 id="email"
                                                 value={values.email}
@@ -99,7 +118,7 @@ class Register extends Component {
                                             <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                                         </div> 
                                         <div className="form-group">
-                                            <label for="exampleInputPassword1">Password</label>
+                                            <label htmlFor="exampleInputPassword1">Password</label>
                                             <input type="password" 
                                                 id="password"
                                                 value={values.password}
@@ -115,7 +134,7 @@ class Register extends Component {
                                             )}
                                         </div>
                                         <div className="form-group">
-                                            <label for="confirmPassword">Confirm Password</label>
+                                            <label htmlFor="confirmPassword">Confirm Password</label>
                                             <input type="password" 
                                                 id="confirmPassword"
                                                 value={values.confirmPassword}
@@ -130,7 +149,7 @@ class Register extends Component {
                                                 <div className="input-feedback">{errors.confirmPassword}</div>
                                             )}
                                         </div>
-                                        <button type="submit" className="btn btn-primary" disabled={!isValid || isSubmitting}>Submit</button>
+                                        <button type="submit" className="btn btn-primary" onClick={handleSubmit} disabled={!isValid || isSubmitting}>Submit</button>
                                         <div className="form-group">
                                             Already registered? Login from <Link to="/login">here</Link>.
                                         </div>
@@ -145,4 +164,32 @@ class Register extends Component {
     }
 }
 
-export default withRouter(Register);
+Register.propTypes = {
+    onSubmitForm: PropTypes.func,
+    errors: PropTypes.object
+};
+
+function mapStateToProps(state){
+    return { 
+        errors: state.register.errors,
+        user: state.register.user
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+      onSubmitForm: (evt, actions) => {
+        if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+        dispatch(registerRequest(evt));
+        setTimeout(() => {
+            actions.setSubmitting(false);
+        }, 500);
+      },
+      onPageInit: dispatch(registerPageInit())
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withRouter(Register));

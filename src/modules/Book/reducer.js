@@ -8,6 +8,7 @@ import {
     BOOK_DETAIL_CLOSE,
     BOOK_DELETE_ERROR,
     BOOK_DELETE_SUCCESS,
+    RELEASE_STATE_DATA
 } from './actions';
 import { combineReducers } from "redux";
 import  manageBookReducer  from './ManageBook/reducer';
@@ -26,7 +27,7 @@ export const initialState = {
 const bookReducers = function(state = initialState,actions){
     switch(actions.type){
         case BOOK_PAGE_INIT:
-            return {...state, errors:[], books: [], selectedBook: {}};
+            return {...state, errors:[], books: []};
         case BOOK_SUCCESS:
             return {...state, successful: true, books:[...actions.payload]};
         case BOOK_ERROR:
@@ -43,6 +44,8 @@ const bookReducers = function(state = initialState,actions){
             return {...state, deleteBook: {...actions.payload}};
         case BOOK_DELETE_ERROR:
             return {...state, selectedBookError:{...actions.error}};
+        case RELEASE_STATE_DATA:
+            return {...state, errors:[], books: [], selectedBook: {},selectedBookError: {},deleteBook: {}}
         default:        
             return state;
     }
