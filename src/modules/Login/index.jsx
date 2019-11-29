@@ -7,17 +7,51 @@ import './login.css';
 import PropTypes from 'prop-types';
 import { loginRequest,loginPageInit }  from './actions';
 import FlashMessage from '../../components/FlashMessage/FlashMessage';
+import { redirectForConfirm } from '../Register/ConfirmAccount/actions';
+import { browserRedirect } from '../../helpers/helpers';
+
 
 class Login extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            email: ''
+        }
+        this.handleConfirmClick = this.handleConfirmClick.bind(this);
+        this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    }
+
+    messageForConfirm() {
+        return (
+            <span>
+                You can confirm your account from <button type="button" className="confirm-button-link" onClick={this.handleConfirmClick}>here</button>.
+            </span>
+        );
+    }
+
+    handleConfirmClick(){
+        this.props.redirectForConfirm(this.state.email);
+        browserRedirect('/confirm-account');
+    }
+
+    handleLoginSubmit(email){
+        this.setState({email})
+    }
 
     render(){
+        let {errors} = this.props;
+        let err_message = errors.data?errors.data:errors.message;
+        let confirm_message = err_message === "Account is not confirmed. Please confirm your account."?true:false;
         return(
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 mx-auto">
-                    {Object.keys(this.props.errors).length > 0 &&
+                    {Object.keys(errors).length > 0 &&
                         <div>
-                            <FlashMessage data={this.props.errors.data?this.props.errors.data:this.props.errors.message} alertClass="danger" />
+                            <FlashMessage data={err_message} alertClass="danger" />
+                            {confirm_message &&
+                                <div>{this.messageForConfirm()}</div>
+                            }
                         </div>
                     }
                     </div>
@@ -81,7 +115,9 @@ class Login extends Component {
                                                 <div className="input-feedback">{errors.password}</div>
                                             )}
                                         </div>
-                                        <button type="submit" className="btn btn-primary" disabled={!isValid}>Submit</button>
+                                        <button type="submit" className="btn btn-primary" onClick={() => {
+                                            this.handleLoginSubmit(values.email);
+                                        }} disabled={!isValid}>Submit</button>
                                         <div className="form-group">
                                             Not registered yet? Register from <Link to="/register">here</Link>.
                                         </div>
@@ -111,7 +147,8 @@ function mapDispatchToProps(dispatch) {
         if (evt !== undefined && evt.preventDefault) evt.preventDefault();
         dispatch(loginRequest(evt));
       },
-      onPageInit: dispatch(loginPageInit())
+      onPageInit: dispatch(loginPageInit()),
+      redirectForConfirm: email =>  dispatch(redirectForConfirm(email))
     };
 }
 

@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 import { Router } from 'react-router';
 import history from '../../config/history';
@@ -10,6 +10,7 @@ const Home = lazy(() => import('../Home'));
 const Logout = lazy(() => import('../Home/logout'));
 const Login = lazy(() => import('../Login'));
 const Register = lazy(() => import('../Register'));
+const ConfirmAccount = lazy(() => import('../Register/ConfirmAccount'));
 const Book = lazy(() => import('../Book'));
 const ManageBook = lazy(() => import('../Book/ManageBook'))
 
@@ -21,6 +22,7 @@ const Routes = () => (
         <PrivateRoute exact path="/" component={Home}/>
         <AuthRoute path="/login" component={Login}/>
         <AuthRoute path="/register" component={Register}/>
+        <AuthRoute path="/confirm-account" component={ConfirmAccount}/>
         <PrivateRoute path="/logout" component={Logout}/>
         <PrivateRoute path="/book" component={Book}/>
         <PrivateRoute path="/manage-book/:id" component={ManageBook}/>

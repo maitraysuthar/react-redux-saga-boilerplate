@@ -6,6 +6,9 @@ import {
   registerSuccess,
   registerError,
 } from "./actions";
+import { redirectForConfirm } from './ConfirmAccount/actions';
+import { browserRedirect } from '../../helpers/helpers';
+import otpSaga from './ConfirmAccount/saga';
 
 //Register API call
 function registerCall(payload) {
@@ -16,15 +19,18 @@ function registerCall(payload) {
 function* registerWorker({ payload }) {
   try {
     let response = yield call(registerCall, payload);
-    yield put(registerSuccess(response));
+    yield put(registerSuccess());
+    yield put(redirectForConfirm(response.data.data.email));
+    yield call(browserRedirect, '/confirm-account');
   } catch (err) {
     yield put(registerError(err.response.data));
   }
 }
 
-// Login Watcher
+// Register Watcher
 export default function* registerSaga() {
   yield all([
     takeLatest(REGISTER_REQUESTING, registerWorker),
+    otpSaga()
   ]);
 }

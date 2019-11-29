@@ -8,6 +8,7 @@ import '../Login/login.css';
 import PropTypes from 'prop-types';
 import { registerRequest,registerPageInit }  from './actions';
 import FlashMessage from '../../components/FlashMessage/FlashMessage';
+import Spinner from '../../components/Spinner/Spinner';
 
 class Register extends Component {
     componentDidUpdate(prevProps, prevState) {
@@ -19,6 +20,7 @@ class Register extends Component {
     render(){
         return(
             <div className="container">
+                {this.props.requesting && <Spinner /> }
                 <div className="row">
                     <div className="col-md-6 mx-auto">
                     {Object.keys(this.props.errors).length > 0 &&
@@ -172,7 +174,8 @@ Register.propTypes = {
 function mapStateToProps(state){
     return { 
         errors: state.register.errors,
-        user: state.register.user
+        user: state.register.user,
+        requesting: state.register.requesting
     };
 }
 
